@@ -15,9 +15,9 @@ const plugins = [
   new FileManagerPlugin({
     events: {
       // Remove build dir
-      onStart: {
-        delete: [BUILD_DIR],
-      },
+      // onStart: {
+      //   delete: [BUILD_DIR],
+      // },
       onEnd: {
         // Copy static files
         copy: [
@@ -33,30 +33,29 @@ const plugins = [
     template: path.join(PUBLIC_DIR, "index.html"),
     filename: "index.html",
   }),
-  //
-  // new FaviconsWebpackPlugin({
-  //   logo: path.resolve(PUBLIC_DIR, "favicon.svg"),
-  //   prefix: "/favicons/",
-  //   outputPath: path.resolve(BUILD_DIR, "favicons"),
-  //   mode: "webapp",
-  //   // Injecting into all HTML Files or separately (for an every instance of HtmlWebpackPlugin)
-  //   // inject: true,
-  //   inject: (htmlPlugin) =>
-  //     path.basename(htmlPlugin.options.filename) === "index.html",
-  //   favicons: {
-  //     icons: {
-  //       appleIcon: false, // Apple touch icons.
-  //       appleStartup: false, // Apple startup images.
-  //       android: false, // Android homescreen icon.
-  //       favicons: true, // Regular favicons.
-  //       coast: false, // Opera Coast icon.
-  //       firefox: false, // Firefox OS icons.
-  //       windows: false, // Windows 8 tile icons.
-  //       yandex: false, // Yandex browser icon.
-  //     },
-  //   },
-  //   cache: false, // Disallow caching the assets across webpack builds.
-  // }),
+  new FaviconsWebpackPlugin({
+    logo: path.resolve(PUBLIC_DIR, "favicon.svg"),
+    prefix: "/favicons/",
+    outputPath: path.resolve(BUILD_DIR, "favicons"),
+    mode: "webapp",
+    // Injecting into all HTML Files or separately (for an every instance of HtmlWebpackPlugin)
+    // inject: true,
+    inject: (htmlPlugin) =>
+      path.basename(htmlPlugin.options.filename) === "index.html",
+    favicons: {
+      icons: {
+        appleIcon: false, // Apple touch icons.
+        appleStartup: false, // Apple startup images.
+        android: false, // Android homescreen icon.
+        favicons: true, // Regular favicons.
+        coast: false, // Opera Coast icon.
+        firefox: false, // Firefox OS icons.
+        windows: false, // Windows 8 tile icons.
+        yandex: false, // Yandex browser icon.
+      },
+    },
+    cache: false, // Disallow caching the assets across webpack builds.
+  }),
   new webpack.HotModuleReplacementPlugin(), // For page reloading
 ];
 
@@ -66,7 +65,7 @@ if (process.env.SERVE) {
 
 const devServer = {
   historyApiFallback: true, // Apply HTML5 History API if routes are used
-  open: true,
+  open: false,
   compress: true,
   allowedHosts: "all",
   hot: true, // Reload the page after changes saved (HotModuleReplacementPlugin)
@@ -136,6 +135,32 @@ module.exports = {
       // --- S/A/C/SS
       {
         test: /\.(s[ac]|c)ss$/i,
+        exclude: /\.module\.(s[ac]|c)ss$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader", // translates css into CommonJS
+          },
+          {
+            // autoprefixer
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    "postcss-preset-env",
+                    {
+                      // Options
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+        ],
+      },
+      {
+        test: /\.module\.(s[ac]|c)ss$/i,
         use: [
           MiniCssExtractPlugin.loader,
           {

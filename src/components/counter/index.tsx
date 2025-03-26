@@ -1,6 +1,22 @@
-import React from "react";
-import * as styles from "./counter.modules.css";
+import React, { useState } from "react";
+import * as styles from "./counter.module.scss";
 
 export default function Counter() {
-  return <div className={styles.counter}>Counter 123</div>;
+  const [count, setCounter] = useState(0);
+
+  function increment() {
+    setCounter((prev) => prev + 1);
+  }
+
+  function decrement() {
+    setCounter((prev) => prev - 1);
+  }
+
+  return (
+    <div className={styles.counter}>
+      <button onClick={decrement}>-</button>
+      <span>{count}</span>
+      <button onClick={increment}>+</button>
+    </div>
+  );
 }

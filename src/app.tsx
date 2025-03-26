@@ -3,9 +3,10 @@ import Counter from "./components/counter";
 
 export function App() {
   return (
-    <main>
-      Home 123
-      <Counter />
-    </main>
+    <div className="wrapper">
+      <main>
+        <Counter />
+      </main>
+    </div>
   );
 }

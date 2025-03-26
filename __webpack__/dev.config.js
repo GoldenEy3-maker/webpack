@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const plugins = [
   new MiniCssExtractPlugin({
-    filename: "[name].[contenthash].css",
+    filename: "[name].css",
   }),
 ];
 
@@ -14,6 +14,7 @@ module.exports = merge(common, {
   plugins,
   devtool: "inline-source-map",
   output: {
-    filename: "[name].[contenthash].js",
+    filename: "[name].js",
+    clean: true,
   },
 });

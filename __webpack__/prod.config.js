@@ -50,6 +50,7 @@ module.exports = merge(common, {
   devtool: false,
   output: {
     filename: "[fullhash].js",
+    clean: true,
   },
   optimization: {
     usedExports: false,
